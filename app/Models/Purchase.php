@@ -12,7 +12,7 @@ class Purchase extends Model
     use HasUuids, HasFactory;
 
     protected $fillable = [
-        'amount', 'status',
+        'amount',
     ];
 
     protected function casts(): array
