@@ -57,12 +57,12 @@ class AchievementArrayService
     }
 
     public function handle(User $user): array {
-    return [
-        'unlocked_achievements' => fetchUnlockedAchievements(User $user),
-        'next_available_achievements' => fetchNextAvailableAchievements(User $user),
-        'current_badge' => fetchUserCurrentBadge(User $user),
-        'next_badge' => fetchNextBadge(User $user),
-        'remaining_to_unlock_next_badge' => pointsToUnlockNextBadge(User $user),
-    ];
-}
+        return [
+            'unlocked_achievements' => $this->fetchUnlockedAchievements($user),
+            'next_available_achievements' => $this->fetchNextAvailableAchievements($user),
+            'current_badge' => $this->fetchUserCurrentBadge($user),
+            'next_badge' => $this->fetchNextBadge($user),
+            'remaining_to_unlock_next_badge' => $this->pointsToUnlockNextBadge($user),
+        ];
+    }
 }
