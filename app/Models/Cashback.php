@@ -10,7 +10,7 @@ class Cashback extends Model
     use HasUuids;
 
     protected $fillable = [
-        'amount',
+        'user_id', 'badge_id', 'amount', //  Add user_id
     ];
 
     protected function casts()
@@ -20,7 +20,7 @@ class Cashback extends Model
         ];
     }
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     // Relationships
 

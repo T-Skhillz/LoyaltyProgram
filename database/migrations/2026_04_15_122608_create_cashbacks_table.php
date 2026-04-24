@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
             $table->foreignUuid('badge_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', 8, 2)->default(0);
-            $table->timestamp('created_at');
+            $table->timestamps();
 
             $table->unique(['user_id', 'badge_id']);
         });

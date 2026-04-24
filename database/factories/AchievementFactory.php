@@ -17,22 +17,44 @@ class AchievementFactory extends Factory
      */
     public function definition(): array
     {
+        // Define logical tiers to ensure consistency
+        $tiers = [
+            'bronze' => [
+                'names' => ['Early Bird', 'First Step', 'Newcomer'],
+                'points' => 10,
+                'spend' => 100,
+                'count' => 1
+            ],
+            'silver' => [
+                'names' => ['Regular', 'Bronze Spender', 'Loyal Supporter'],
+                'points' => 50,
+                'spend' => 1000,
+                'count' => 10
+            ],
+            'gold' => [
+                'names' => ['Big Spender', 'Power User', 'Elite Collector'],
+                'points' => 250,
+                'spend' => 5000,
+                'count' => 50
+            ],
+            'platinum' => [
+                'names' => ['Whale', 'Legendary Member', 'VIP'],
+                'points' => 1000,
+                'spend' => 25000,
+                'count' => 150
+            ]
+        ];
+
+        $selectedTier = fake()->randomElement($tiers);
         $type = fake()->randomElement(['amount_spent', 'purchases_count']);
 
         return [
-            'name' => fake()->randomElement([
-                'First Purchase',
-                'Big Spender',
-                'Loyal Customer',
-                '100 Points',
-                '500 Points',
-                'Elite Member',
-            ]),
-            'type' => $type,
-            'points_awarded' => fake()->randomElement([10, 50, 100, 250]),
-            'threshold' => $type === 'amount_spent'
-                ? fake()->randomElement([1000, 5000, 10000]) // money
-                : fake()->randomElement([1, 5, 10, 20]),     // count
+            'name'           => fake()->randomElement($selectedTier['names']),
+            'type'           => $type,
+            'points_awarded' => $selectedTier['points'],
+            'threshold'      => ($type === 'amount_spent') 
+                                ? $selectedTier['spend'] 
+                                : $selectedTier['count'],
         ];
     }
     
