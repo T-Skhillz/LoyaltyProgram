@@ -23,6 +23,12 @@ class User extends Authenticatable
         'full_name', 'username', 'email',
         'password',
     ];
+
+    // prevent password leakage
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
    
     /**
      * Get the attributes that should be cast.

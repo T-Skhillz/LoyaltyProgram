@@ -31,7 +31,7 @@ class AchievementArrayService
 
                 // Return the gap (The smaller the gap, the higher it sits in the list)
                 return $achievement->threshold - $current;
-            });
+            })->values();
 
          return $AvailableAchievements;
     }

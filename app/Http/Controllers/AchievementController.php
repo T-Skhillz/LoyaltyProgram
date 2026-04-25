@@ -13,7 +13,7 @@ class AchievementController extends Controller
     public function __construct(protected AchievementArrayService $achievementArrayService){}
 
     public function index(IndexAchievementRequest $request, User $user): AchievementResource {
-        // $user = Auth::user(); 
+        $user = Auth::user(); 
         $data = $this->achievementArrayService->handle($user);
 
         return new AchievementResource($data);

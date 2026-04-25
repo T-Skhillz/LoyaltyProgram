@@ -1,58 +1,248 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Loyalty Program API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A backend system for a loyalty program where customers unlock achievements and earn badges for their purchases. After every unlocked badge, a cashback payment of 300 naira is rewarded.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Framework:** Laravel (PHP)
+- **Database:** PostgreSQL (production), SQLite (testing)
+- **Authentication:** Laravel Sanctum
+- **Testing:** Pest
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Setup Instructions
 
 ```bash
-composer require laravel/boost --dev
+# 1. Clone the repository
+git clone https://github.com/T-Skhillz/LoyaltyProgram.git
+cd LoyaltyProgram
 
-php artisan boost:install
+# 2. Install dependencies
+composer install
+
+# 3. Configure environment
+cp .env.example .env
+php artisan key:generate
+
+# 4. Update .env with your database credentials
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=loyalty_program
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+
+# 5. Run migrations and seed the database
+php artisan migrate --seed
+
+# 6. Serve the application
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## API Endpoints
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+All endpoints except `register` and `login` require a `Bearer` token in the `Authorization` header.
 
-## Code of Conduct
+```
+POST      /api/v1/register
+POST      /api/v1/login
+POST      /api/v1/logout
+GET|HEAD  /api/v1/user
+POST      /api/v1/purchases
+GET|HEAD  /api/v1/users/{user}/achievements
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+### POST /api/v1/register
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Request:**
+```json
+{
+    "full_name": "Red Hood",
+    "username": "red",
+    "email": "red@gmail.com",
+    "password": "1234test",
+    "password_confirmation": "1234test"
+}
+```
 
-## License
+**Response `201`:**
+```json
+{
+    "user": {
+        "full_name": "Red Hood",
+        "username": "red",
+        "email": "red@gmail.com",
+        "id": "019dbf83-8b38-717a-85ff-e79c77c4e340",
+        "updated_at": "2026-04-25T14:35:37.000000Z",
+        "created_at": "2026-04-24T12:42:42.000000Z"
+    },
+    "access_token": "your_token_here",
+    "token_type": "Bearer"
+}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+### POST /api/v1/login
+
+**Request:**
+```json
+{
+    "username": "red",
+    "password": "1234test"
+}
+```
+
+**Response `200`:**
+```json
+{
+    "access_token": "your_token_here",
+    "token_type": "Bearer"
+}
+```
+
+---
+
+### POST /api/v1/logout
+
+**Response `200`:**
+```json
+{
+    "message": "Logged out successfully"
+}
+```
+
+---
+
+### GET /api/v1/user
+
+**Response `200`:**
+```json
+{
+    "id": "019dbf83-8b38-717a-85ff-e79c77c4e340",
+    "full_name": "Red Hood",
+    "username": "red",
+    "email": "red@gmail.com",
+    "current_points": 1050,
+    "total_amount_spent": "50000.00",
+    "total_purchase_count": 5,
+    "created_at": "2026-04-24T12:42:42.000000Z",
+    "updated_at": "2026-04-25T14:35:37.000000Z"
+}
+```
+
+---
+
+### POST /api/v1/purchases
+
+**Request:**
+```json
+{
+    "amount": 1234
+}
+```
+
+**Response `201`:**
+```json
+{
+    "message": "Purchase completed successfully."
+}
+```
+
+---
+
+### GET /api/v1/users/{user}/achievements
+
+**Response `200`:**
+```json
+{
+    "data": {
+        "achievements": {
+            "unlocked_achievements": [
+                {
+                    "id": "019dbf83-13fc-72e5-af3d-ef3e608edc84",
+                    "name": "Whale",
+                    "type": "amount_spent",
+                    "points_awarded": 1000,
+                    "threshold": 25000,
+                    "created_at": "2026-04-24T12:42:11.000000Z",
+                    "updated_at": "2026-04-24T12:42:11.000000Z"
+                },
+                {
+                    "id": "019dbf83-13ff-7047-b305-602d08474849",
+                    "name": "Loyal Supporter",
+                    "type": "amount_spent",
+                    "points_awarded": 50,
+                    "threshold": 1000,
+                    "created_at": "2026-04-24T12:42:11.000000Z",
+                    "updated_at": "2026-04-24T12:42:11.000000Z"
+                }
+            ],
+            "next_available_achievements": [
+                {
+                    "id": "019dbf83-12b9-7036-a3ae-6b153499f78a",
+                    "name": "Early Bird",
+                    "type": "purchases_count",
+                    "points_awarded": 10,
+                    "threshold": 1,
+                    "created_at": "2026-04-24T12:42:11.000000Z",
+                    "updated_at": "2026-04-24T12:42:11.000000Z"
+                },
+                {
+                    "id": "019dbf83-13fd-7127-8d82-183a91b97f30",
+                    "name": "Bronze Spender",
+                    "type": "purchases_count",
+                    "points_awarded": 50,
+                    "threshold": 10,
+                    "created_at": "2026-04-24T12:42:11.000000Z",
+                    "updated_at": "2026-04-24T12:42:11.000000Z"
+                },
+                {
+                    "id": "019dbf83-13fa-7332-9644-ec0ca9f7820b",
+                    "name": "Power User",
+                    "type": "purchases_count",
+                    "points_awarded": 250,
+                    "threshold": 50,
+                    "created_at": "2026-04-24T12:42:11.000000Z",
+                    "updated_at": "2026-04-24T12:42:11.000000Z"
+                }
+            ]
+        },
+        "badges": {
+            "current_badge": {
+                "id": "019dbf83-12c6-7236-8446-b432a3e8711b",
+                "name": "Loyal Customer",
+                "points_required": 1000,
+                "created_at": "2026-04-24T12:42:11.000000Z",
+                "updated_at": "2026-04-24T12:42:11.000000Z"
+            },
+            "next_badge": {
+                "id": "019dbf83-1532-7004-8f18-764736fe027f",
+                "name": "Elite Member",
+                "points_required": 2000,
+                "created_at": "2026-04-24T12:42:12.000000Z",
+                "updated_at": "2026-04-24T12:42:12.000000Z"
+            },
+            "remaining_to_unlock_next_badge": 950
+        },
+        "meta": {
+            "generated_at": "2026-04-25T15:03:26+00:00"
+        }
+    }
+}
+```
+
+---
+
+## Running Tests
+
+```bash
+php artisan test
+```
