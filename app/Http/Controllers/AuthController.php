@@ -48,9 +48,9 @@ class AuthController extends Controller
 
         // Check If user doesn't exist or password fails
         if (! $user || ! Hash::check($request->password, $user->password)){
-            throw ValidationException::withMessages([
-                'username' => ['The provided credentials are incorrect.'],
-            ]);
+           return response()->json([
+                'message' => 'The provided credentials are incorrect.'
+            ], 401);
         }
 
         //4. Create and return token
@@ -68,6 +68,6 @@ class AuthController extends Controller
 
             return response()->json([
                 'message' => 'Logged out successfully'
-            ]);
+            ], 200);
     }
 }
