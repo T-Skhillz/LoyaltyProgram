@@ -37,7 +37,6 @@ it('gets and checks all 5 fields are correct', function () {
     $response = $this->getJson("/api/v1/users/{$user->id}/achievements");
     
     // assert - check that all 5 fields are consistent
-    //dd(Achievement::all()->toArray(), $response->json());
     $response->assertStatus(200)
         ->assertJsonStructure([
                     'data' => [

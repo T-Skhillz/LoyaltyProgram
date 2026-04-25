@@ -36,33 +36,21 @@ class AchievementArrayService
          return $AvailableAchievements;
     }
 
-    public function fetchUserCurrentBadge(User $user){
+    public function handle(User $user): array {
         $currentBadge = Badge::where('points_required', '<=', $user->current_points)
             ->orderBy('points_required', 'desc')->first();
-
-        return $currentBadge; 
-    }
-
-    public function fetchNextBadge(User $user){
+        
         $nextBadge = Badge::where('points_required', '>', $user->current_points)
             ->orderBy('points_required', 'asc')->first();
 
-        return $nextBadge;
-    }
-
-    public function pointsToUnlockNextBadge(User $user){
-        $nextBadge = Badge::where('points_required', '>', $user->current_points)
-            ->orderBy('points_required', 'asc')->first();
-        return $nextBadge ? $nextBadge->points_required - $user->current_points : null;
-    }
-
-    public function handle(User $user): array {
         return [
             'unlocked_achievements' => $this->fetchUnlockedAchievements($user),
             'next_available_achievements' => $this->fetchNextAvailableAchievements($user),
-            'current_badge' => $this->fetchUserCurrentBadge($user),
-            'next_badge' => $this->fetchNextBadge($user),
-            'remaining_to_unlock_next_badge' => $this->pointsToUnlockNextBadge($user),
+            'current_badge' => $currentBadge,
+            'next_badge' => $nextBadge,
+            'remaining_to_unlock_next_badge' => $nextBadge 
+                ? $nextBadge->points_required - $user->current_points 
+                : null,
         ];
     }
 }
