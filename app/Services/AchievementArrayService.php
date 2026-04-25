@@ -18,14 +18,14 @@ class AchievementArrayService
     }
 
     public function fetchNextAvailableAchievements(User $user){
-        $AvailableAchievements = Achievement::whereIn('type', ['amount_spent', 'purchase_count'])
+        $AvailableAchievements = Achievement::whereIn('type', ['amount_spent', 'purchases_count'])
             ->whereDoesntHave('users', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
             ->get()
             ->sortBy(function ($achievement) use ($user) {
                 // Get the relevant user stat
-                $current = ($achievement->type === 'purchase_count') 
+                $current = ($achievement->type === 'purchases_count') 
                     ? $user->total_purchase_count 
                     : $user->total_amount_spent;
 

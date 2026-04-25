@@ -29,9 +29,9 @@ class UserFactory extends Factory
             'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'), // Default password for all test users
-            'current_points' => fake()->numberBetween(0, 1000),
-            'total_amount_spent' => fake()->randomFloat(2, 0, 5000),
-            'total_purchase_count' => fake()->numberBetween(0, 50),
+            'current_points' => 0, // fake()->numberBetween(0, 1000),
+            'total_amount_spent' => 0, // fake()->randomFloat(2, 0, 5000),
+            'total_purchase_count' => 0, // fake()->numberBetween(0, 50),
             //'remember_token' => Str::random(10),
         ];
     }

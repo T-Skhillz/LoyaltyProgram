@@ -17,45 +17,34 @@ class AchievementFactory extends Factory
      */
     public function definition(): array
     {
-        // Define logical tiers to ensure consistency
-        $tiers = [
-            'bronze' => [
-                'names' => ['Early Bird', 'First Step', 'Newcomer'],
-                'points' => 10,
-                'spend' => 100,
-                'count' => 1
-            ],
-            'silver' => [
-                'names' => ['Regular', 'Bronze Spender', 'Loyal Supporter'],
-                'points' => 50,
-                'spend' => 1000,
-                'count' => 10
-            ],
-            'gold' => [
-                'names' => ['Big Spender', 'Power User', 'Elite Collector'],
-                'points' => 250,
-                'spend' => 5000,
-                'count' => 50
-            ],
-            'platinum' => [
-                'names' => ['Whale', 'Legendary Member', 'VIP'],
-                'points' => 1000,
-                'spend' => 25000,
-                'count' => 150
-            ]
-        ];
-
-        $selectedTier = fake()->randomElement($tiers);
-        $type = fake()->randomElement(['amount_spent', 'purchases_count']);
-
+        // Provide a safe "fallback" default
         return [
-            'name'           => fake()->randomElement($selectedTier['names']),
-            'type'           => $type,
-            'points_awarded' => $selectedTier['points'],
-            'threshold'      => ($type === 'amount_spent') 
-                                ? $selectedTier['spend'] 
-                                : $selectedTier['count'],
+            'name' => 'Achievement',
+            'type' => 'purchases_count',
+            'points_awarded' => 10,
+            'threshold' => 1,
         ];
+    }
+
+    // Create specific states for your tiers
+    public function platinum(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'VIP',
+            'points_awarded' => 1000,
+            'threshold' => 150,
+            'type' => 'purchases_count',
+        ]);
+    }
+
+    public function silver(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'name' => 'Bronze Spender',
+            'points_awarded' => 50,
+            'threshold' => 10,
+            'type' => 'purchases_count',
+        ]);
     }
     
 }
