@@ -14,17 +14,16 @@ class BadgeSeeder extends Seeder
      */
     public function run(): void
     {
-        $badges = [
-            ['name' => 'Newcomer',        'points_required' => 0],
-            ['name' => 'First Purchase',  'points_required' => 10],
-            ['name' => 'Frequent Flyer',  'points_required' => 100],
-            ['name' => 'Big Spender',     'points_required' => 500],
-            ['name' => 'Loyal Customer',  'points_required' => 1000],
-            ['name' => 'Elite Member',    'points_required' => 2000],
-        ];
-
-        foreach ($badges as $badge) {
-            Badge::create($badge);
-        }
+        Badge::factory()
+            ->count(6)
+            ->sequence(
+                ['name' => 'Newcomer',      'points_required' => 0],
+                ['name' => 'First Purchase', 'points_required' => 10],
+                ['name' => 'Frequent Flyer', 'points_required' => 100],
+                ['name' => 'Big Spender',    'points_required' => 500],
+                ['name' => 'Loyal Customer', 'points_required' => 1000],
+                ['name' => 'Elite Member',   'points_required' => 2000],
+            )
+            ->create();
     }
 }

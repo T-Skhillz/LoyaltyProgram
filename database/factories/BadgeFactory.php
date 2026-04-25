@@ -17,8 +17,8 @@ class BadgeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->words(2, true), // Generates "Golden Star", etc.
-            'points_required' => fake()->unique()->numberBetween(10, 5000),
+            'name' => $this->faker->word(),
+            'points_required' => $this->faker->numberBetween(0, 5000),
         ];
     }
 }

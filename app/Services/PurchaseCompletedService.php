@@ -13,7 +13,7 @@ class PurchaseCompletedService
         $user = $event->user;
 
         // 1. Fetch achievements user doesnt have
-        $potentialAchievements = Achievement::whereIn('type', ['amount_spent', 'purchase_count'])
+        $potentialAchievements = Achievement::whereIn('type', ['amount_spent', 'purchases_count'])
             ->whereDoesntHave('users', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
@@ -26,7 +26,7 @@ class PurchaseCompletedService
                 $conditionMet = $user->total_amount_spent >= $achievement->threshold;
             }
 
-            if ($achievement->type === 'purchase_count'){
+            if ($achievement->type === 'purchases_count'){
                 $conditionMet = $user->total_purchase_count >= $achievement->threshold;
             }
 
