@@ -14,9 +14,9 @@ it('gets and checks all 5 fields are correct', function () {
     $this->actingAs($user);
 
     // Two achievements — one the user has unlocked, one they haven't:
-    $unlocked_achievement = Achievement::factory()->platinum()->create();
+    $unlocked_achievement = Achievement::factory()->create();
 
-    $available_achievement = Achievement::factory()->silver()->create([
+    $available_achievement = Achievement::factory()->create([
         'type' => 'purchases_count',
         'threshold' => 200,
     ]);

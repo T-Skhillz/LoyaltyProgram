@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('purchases', function (Blueprint $table) {
-            $table->uuid('id')->primry();
+            $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
-            $table->decimal('amount', 8, 2)->default(0);
+            $table->decimal('amount', 16, 2)->default(0);
             $table->enum('status', ['pending', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
         });

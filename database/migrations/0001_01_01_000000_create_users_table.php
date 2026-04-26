@@ -21,7 +21,7 @@ return new class extends Migration
 
             // User aggregates
             $table->bigInteger('current_points')->default(0);
-            $table->decimal('total_amount_spent', 8, 2)->default(0);
+            $table->decimal('total_amount_spent', 16, 2)->default(0);
             $table->bigInteger('total_purchase_count')->default(0);
 
             $table->timestamps();
