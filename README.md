@@ -246,3 +246,20 @@ GET|HEAD  /api/v1/users/{user}/achievements
 ```bash
 php artisan test
 ```
+
+## Frontend Dashboard
+
+A standalone HTML dashboard is included at `public/loyalty_program_dashboard.html`.
+
+Access it at: `http://loyalty_program.test/loyalty_program_dashboard.html`
+
+Features:
+- Register and login
+- View current badge and progress to next badge
+- Submit purchases
+- Track unlocked and upcoming achievements
+- Live notifications for unlocked achievements, badges, and cashback rewards
+
+> **Note:** The dashboard is implemented in vanilla HTML/CSS/JavaScript rather than React. 
+> The backend pipeline was the primary focus of this assessment. The frontend demonstrates 
+> full API integration including authentication, purchase flow, and real-time unlock notifications.
