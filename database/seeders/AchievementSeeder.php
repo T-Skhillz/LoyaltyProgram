@@ -2,50 +2,84 @@
 
 namespace Database\Seeders;
 
-use App\Models\Achievement;
 use Illuminate\Database\Seeder;
+use App\Models\Achievement;
 
 class AchievementSeeder extends Seeder
 {
     public function run(): void
     {
         $achievements = [
-            ['name' => 'Early Bird',      'type' => 'purchases_count', 'points_awarded' => 10,   'threshold' => 1],
-            ['name' => 'Regular',         'type' => 'purchases_count', 'points_awarded' => 50,   'threshold' => 10],
-            ['name' => 'Power User',      'type' => 'purchases_count', 'points_awarded' => 250,  'threshold' => 50],
-            ['name' => 'Loyal Supporter', 'type' => 'amount_spent',    'points_awarded' => 50,   'threshold' => 1000],
-            ['name' => 'Whale',           'type' => 'amount_spent',    'points_awarded' => 1000, 'threshold' => 25000],
+            // Purchase count milestones
+            [
+                'name'           => 'First Order',
+                'type'           => 'purchases_count',
+                'threshold'      => 1,
+                'points_awarded' => 10,
+            ],
+            [
+                'name'           => 'Regular Shopper',
+                'type'           => 'purchases_count',
+                'threshold'      => 5,
+                'points_awarded' => 30,
+            ],
+            [
+                'name'           => 'Frequent Buyer',
+                'type'           => 'purchases_count',
+                'threshold'      => 10,
+                'points_awarded' => 75,
+            ],
+            [
+                'name'           => 'Power Shopper',
+                'type'           => 'purchases_count',
+                'threshold'      => 25,
+                'points_awarded' => 150,
+            ],
+            [
+                'name'           => 'Elite Customer',
+                'type'           => 'purchases_count',
+                'threshold'      => 50,
+                'points_awarded' => 300,
+            ],
+
+            // Amount spent milestones (in Naira)
+            [
+                'name'           => 'First Spend',
+                'type'           => 'amount_spent',
+                'threshold'      => 1000,
+                'points_awarded' => 10,
+            ],
+            [
+                'name'           => 'Bronze Spender',
+                'type'           => 'amount_spent',
+                'threshold'      => 5000,
+                'points_awarded' => 40,
+            ],
+            [
+                'name'           => 'Silver Spender',
+                'type'           => 'amount_spent',
+                'threshold'      => 20000,
+                'points_awarded' => 100,
+            ],
+            [
+                'name'           => 'Gold Spender',
+                'type'           => 'amount_spent',
+                'threshold'      => 50000,
+                'points_awarded' => 250,
+            ],
+            [
+                'name'           => 'Whale',
+                'type'           => 'amount_spent',
+                'threshold'      => 100000,
+                'points_awarded' => 600,
+            ],
         ];
 
-        foreach ($achievements as $data) {
-            Achievement::updateOrCreate(['name' => $data['name']], $data);
+        foreach ($achievements as $achievement) {
+            Achievement::firstOrCreate(
+                ['name' => $achievement['name']],
+                $achievement
+            );
         }
     }
 }
-
-// namespace Database\Seeders;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-// use Illuminate\Database\Seeder;
-
-// use App\Models\Achievement;
-
-// class AchievementSeeder extends Seeder
-// {
-//     /**
-//      * Run the database seeds.
-//      */
-//     public function run(): void
-//     {
-//         Achievement::factory()
-//             ->count(5)
-//             ->sequence(
-//                 ['name' => 'Early Bird',     'type' => 'purchases_count', 'points_awarded' => 10,   'threshold' => 1],
-//                 ['name' => 'Regular',        'type' => 'purchases_count', 'points_awarded' => 50,   'threshold' => 10],
-//                 ['name' => 'Power User',     'type' => 'purchases_count', 'points_awarded' => 250,  'threshold' => 50],
-//                 ['name' => 'Loyal Supporter','type' => 'amount_spent',    'points_awarded' => 50,   'threshold' => 1000],
-//                 ['name' => 'Whale',          'type' => 'amount_spent',    'points_awarded' => 1000, 'threshold' => 25000],
-//             )
-//             ->create();
-//     }
-// }

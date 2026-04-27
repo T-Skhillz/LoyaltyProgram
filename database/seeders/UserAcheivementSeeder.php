@@ -15,13 +15,6 @@ class UserAcheivementSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::factory()->create();
-        $achievements = Achievement::factory()->count(5)->create();
-
-        foreach ($achievements as $achievement) {
-            $user->achievements()->attach($achievement->id, [
-                'unlocked_at' => now(),
-            ]);
-        }
+       //
     }
 }

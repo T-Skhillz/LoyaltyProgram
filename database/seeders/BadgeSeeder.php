@@ -2,52 +2,45 @@
 
 namespace Database\Seeders;
 
-use App\Models\Badge;
 use Illuminate\Database\Seeder;
+use App\Models\Badge;
 
 class BadgeSeeder extends Seeder
 {
     public function run(): void
     {
         $badges = [
-            ['name' => 'Newcomer',       'points_required' => 0],
-            ['name' => 'First Purchase', 'points_required' => 10],
-            ['name' => 'Frequent Flyer', 'points_required' => 100],
-            ['name' => 'Big Spender',    'points_required' => 500],
-            ['name' => 'Loyal Customer', 'points_required' => 1000],
-            ['name' => 'Elite Member',   'points_required' => 2000],
+            [
+                'name'            => 'New Member',
+                'points_required' => 0,
+            ],
+            [
+                'name'            => 'Bronze',
+                'points_required' => 50,
+            ],
+            [
+                'name'            => 'Silver',
+                'points_required' => 150,
+            ],
+            [
+                'name'            => 'Gold',
+                'points_required' => 350,
+            ],
+            [
+                'name'            => 'Platinum',
+                'points_required' => 700,
+            ],
+            [
+                'name'            => 'Diamond',
+                'points_required' => 1200,
+            ],
         ];
 
         foreach ($badges as $badge) {
-            Badge::updateOrCreate(['name' => $badge['name']], $badge);
+            Badge::firstOrCreate(
+                ['name' => $badge['name']],
+                $badge
+            );
         }
     }
 }
-
-// namespace Database\Seeders;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-// use Illuminate\Database\Seeder;
-
-// use App\Models\Badge;
-
-// class BadgeSeeder extends Seeder
-// {
-//     /**
-//      * Run the database seeds.
-//      */
-//     public function run(): void
-//     {
-//         Badge::factory()
-//             ->count(6)
-//             ->sequence(
-//                 ['name' => 'Newcomer',      'points_required' => 0],
-//                 ['name' => 'First Purchase', 'points_required' => 10],
-//                 ['name' => 'Frequent Flyer', 'points_required' => 100],
-//                 ['name' => 'Big Spender',    'points_required' => 500],
-//                 ['name' => 'Loyal Customer', 'points_required' => 1000],
-//                 ['name' => 'Elite Member',   'points_required' => 2000],
-//             )
-//             ->create();
-//     }
-// }
